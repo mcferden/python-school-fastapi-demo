@@ -1,0 +1,14 @@
+/.idea
+/.pytest_cache
+/.venv
+/static
+
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Ignore dynaconf secret files
+.secrets.*
+
+*.sqlite

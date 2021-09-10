@@ -25,4 +25,3 @@ class AccountCreate(BaseModel):
 class AccountUpdate(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    avatar: Optional[UploadFile] = None

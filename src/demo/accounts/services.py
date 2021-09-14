@@ -54,11 +54,8 @@ class AccountService:
     def update_account(self, account_id: int, account_update: AccountUpdate):
         account = self._get_account(account_id)
 
-        if not account_update.first_name and not account_update.last_name:
-            return
-
-        account.first_name = account_update.first_name or account.first_name
-        account.last_name = account_update.last_name or account.last_name
+        for k, v in account_update.dict(exclude_unset=True):
+            setattr(account, k, v)
 
         self.session.commit()
         return account

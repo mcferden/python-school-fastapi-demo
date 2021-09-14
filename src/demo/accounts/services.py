@@ -2,9 +2,7 @@ import shutil
 from typing import List
 
 from fastapi import Depends
-from fastapi import HTTPException
 from fastapi import UploadFile
-from fastapi import status
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -15,6 +13,8 @@ from ..config import Settings
 from ..config import get_settings
 from ..database import Session
 from ..database import get_session
+from ..exceptions import EntityConflictError
+from ..exceptions import EntityDoesNotExistError
 from .models import Account
 from .schemas import AccountCreate
 from .schemas import AccountUpdate
@@ -29,7 +29,7 @@ class AccountService:
         self.session = session
         self.settings = settings
 
-    def create_account(self, account_create: AccountCreate):
+    def create_account(self, account_create: AccountCreate) -> Account:
         account = Account(
             email=account_create.email,
             username=account_create.username,
@@ -40,7 +40,7 @@ class AccountService:
             self.session.commit()
             return account
         except IntegrityError:
-            raise HTTPException(status.HTTP_409_CONFLICT) from None
+            raise EntityConflictError from None
 
     def get_accounts(self) -> List[Account]:
         accounts = self.session.execute(
@@ -84,4 +84,4 @@ class AccountService:
             ).scalar_one()
             return account
         except NoResultFound:
-            raise HTTPException(status.HTTP_404_NOT_FOUND) from None
+            raise EntityDoesNotExistError from None

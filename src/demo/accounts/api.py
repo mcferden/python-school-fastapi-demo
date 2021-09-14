@@ -11,6 +11,8 @@ from .schemas import Account as AccountSchema
 from .schemas import AccountCreate
 from .schemas import AccountUpdate
 from .services import AccountService
+from ..auth.dependencies import get_current_account
+from ..auth.schemas import AuthAccount
 from ..exceptions import EntityConflictError
 from ..exceptions import EntityDoesNotExistError
 
@@ -38,6 +40,7 @@ def create_account(
 
 @router.get('', response_model=List[AccountSchema])
 def get_accounts(
+    current_account: AuthAccount = Depends(get_current_account),
     service: AccountService = Depends(),
 ):
     return service.get_accounts()
@@ -46,6 +49,7 @@ def get_accounts(
 @router.get('/{account_id}', response_model=AccountSchema)
 def get_account(
     account_id: int,
+    current_account: AuthAccount = Depends(get_current_account),
     service: AccountService = Depends(),
 ):
     try:
@@ -58,6 +62,7 @@ def get_account(
 def edit_account(
     account_id: int,
     account_update: AccountUpdate,
+    current_account: AuthAccount = Depends(get_current_account),
     service: AccountService = Depends(),
 ):
     try:
@@ -71,6 +76,7 @@ def edit_account(
 def update_account_avatar(
     account_id: int,
     avatar: UploadFile = File(...),
+    current_account: AuthAccount = Depends(get_current_account),
     service: AccountService = Depends(),
 ):
     try:

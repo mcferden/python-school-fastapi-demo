@@ -30,4 +30,7 @@ def get_session() -> Session:
 
 
 Base = declarative_base()
-from .accounts.models import Account  # noqa
+
+
+from .accounts.models import Account   # noqa
+from .auth.models import RefreshToken  # noqa

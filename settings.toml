@@ -1,3 +1,6 @@
 database_url = "sqlite:///database.sqlite"
 static_directory = "static"
 static_url = "/static"
+
+jwt_access_lifetime = 300
+jwt_refresh_lifetime = 100000

@@ -2,7 +2,6 @@ from typing import List
 
 from fastapi import APIRouter
 from fastapi import Depends
-from fastapi import FastAPI
 from fastapi import File
 from fastapi import HTTPException
 from fastapi import UploadFile
@@ -19,10 +18,6 @@ from ..exceptions import EntityDoesNotExistError
 router = APIRouter(
     prefix='/accounts',
 )
-
-
-def initialize_app(app: FastAPI):
-    app.include_router(router)
 
 
 @router.post(
